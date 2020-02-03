@@ -46,12 +46,20 @@ function addBookToLibrary(title, author, pages, read = false) {
 }
 
 
-function render(library) {
-  const allBooks = document.getElementById("all-books");
-
+function render(library, parentNode) {
   library.forEach(book => {
-    allBooks.append(book.getHtml());
+    parentNode.append(book.getHtml());
   });
+}
+
+
+function toggleForm(button, form) {
+  //
+}
+
+
+function createNewBook() {
+  //
 }
 
 // temporary
@@ -61,5 +69,17 @@ addBookToLibrary("Jane Eyre", "Charlotte Bronte", 502, false);
 // console.log(myLibrary);
 
 window.onload = () => {
-  render(myLibrary);
+  const newBookButton = document.getElementById("new-book-button");
+  const submitBook = document.getElementById("submit-book");
+  const allBooksDiv = document.getElementById("all-books");
+
+  render(myLibrary, allBooksDiv);
+
+  newBookButton.addEventListener("click", e => {
+    console.log(`${e.target.id} clicked`);
+  });
+
+  submitBook.addEventListener("click", e => {
+    console.log(`${e.target.id} clicked`);
+  });
 }

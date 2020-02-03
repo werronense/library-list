@@ -8,6 +8,32 @@
   </head>
   <body>
     <h1>Library</h1>
+    <div id="add-book">
+      <button type="button" name="button" id="new-book-button">New Book</button>
+      <form id="new-book-form" class="book-form">
+        <div class="book-form">
+          <label for="title">Enter book title: </label>
+          <input type="text" name="title" required>
+        </div>
+        <div class="book-form">
+          <label for="author">Enter author name: </label>
+          <input type="text" name="author" required>
+        </div>
+        <div class="book-form">
+          <label for="pages">Enter number of pages: </label>
+          <input type="text" name="pages">
+        </div>
+        <div class="book-form">
+          <input type="radio" name="read" value="read" id="read">
+          <label for="read">read</label>
+
+          <input type="radio" name="read" value="not-read" id="not-read"
+          checked>
+          <label for="not-read">not read</label>
+        </div>
+        <input type="submit" value="Add Book" id="submit-book">
+      </form>
+    </div>
     <div id="all-books">
 
     </div>
