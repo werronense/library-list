@@ -24,7 +24,7 @@ Book.prototype.getHtml = function() {
   author.textContent = `Author: ${this.author}`;
 
   let pages = document.createElement("li");
-  pages.textContent = `Pages: ${this.pages}`;
+  pages.textContent = `Pages: ${this.pages > 0 ? this.pages : "unknown"}`;
 
   let read = document.createElement("li");
   read.textContent = `${this.read ? '' : 'not yet'} read`;
@@ -54,12 +54,27 @@ function render(library, parentNode) {
 
 
 function toggleForm(button, form) {
-  //
+  button.classList.toggle("invisible");
+  form.classList.toggle("invisible");
+}
+
+function clearForm(form) {
+  form.title.value = "";
+  form.author.value = "";
+  form.pages.value = "";
+  form.read.value = "not-read";
 }
 
 
-function createNewBook() {
-  //
+function createNewBook(form) {
+  let book = new Book(
+    form.title.value,
+    form.author.value,
+    form.pages.value > 0 || 0,
+    form.read.value == "read"
+  );
+
+  return book;
 }
 
 // temporary
@@ -70,16 +85,25 @@ addBookToLibrary("Jane Eyre", "Charlotte Bronte", 502, false);
 
 window.onload = () => {
   const newBookButton = document.getElementById("new-book-button");
+  const newBookForm = document.getElementById("new-book-form");
   const submitBook = document.getElementById("submit-book");
   const allBooksDiv = document.getElementById("all-books");
 
   render(myLibrary, allBooksDiv);
 
+
   newBookButton.addEventListener("click", e => {
-    console.log(`${e.target.id} clicked`);
+    toggleForm(newBookButton, newBookForm);
   });
 
+
   submitBook.addEventListener("click", e => {
-    console.log(`${e.target.id} clicked`);
+    e.preventDefault();
+
+    let book = createNewBook(newBookForm);
+    allBooksDiv.append(book.getHtml());
+
+    toggleForm(newBookButton, newBookForm);
+    clearForm(newBookForm);
   });
 }
