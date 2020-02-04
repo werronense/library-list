@@ -2,7 +2,7 @@
 
 let myLibrary = [];
 
-
+// Book constructor
 function Book(title, author, pages, read = false) {
   this.title = title,
   this.author = author,
@@ -10,7 +10,7 @@ function Book(title, author, pages, read = false) {
   this.read = read
 }
 
-
+// method definitions
 Book.prototype.getHtml = function() {
   let libraryItem = document.createElement("div");
   libraryItem.classList.add("book");
@@ -40,15 +40,25 @@ Book.prototype.getHtml = function() {
   return libraryItem;
 }
 
+Book.prototype.toggleRead = function() {
+  this.read = !this.read;
+}
+
 
 function addBookToLibrary(title, author, pages, read = false) {
   myLibrary.push(new Book(title, author, pages, read));
 }
 
 
-function render(library, parentNode) {
-  library.forEach(book => {
-    parentNode.append(book.getHtml());
+function render(library, parent) {
+  library.forEach((book, i) => {
+    let bookDiv = book.getHtml();
+    bookDiv.dataset.index = i;
+
+    let removalButton = createRemovalButton();
+
+    bookDiv.append(removalButton);
+    parent.append(bookDiv);
   });
 }
 
@@ -57,6 +67,7 @@ function toggleForm(button, form) {
   button.classList.toggle("invisible");
   form.classList.toggle("invisible");
 }
+
 
 function clearForm(form) {
   form.title.value = "";
@@ -77,11 +88,23 @@ function createNewBook(form) {
   return book;
 }
 
+
+function createRemovalButton() {
+  let removalButton = document.createElement("button");
+  removalButton.textContent = "Remove";
+
+  removalButton.addEventListener("click", e => {
+    myLibrary[e.target.parentNode.dataset.index] = null;
+    e.target.parentNode.classList.toggle("invisible");
+  });
+
+  return removalButton;
+}
+
 // temporary
 addBookToLibrary("The Hobbit", "J.R.R. Tolkein", 295, false);
 addBookToLibrary("The Brothers Karamazov", "Fyodor Dostoyevsky", 776, true);
 addBookToLibrary("Jane Eyre", "Charlotte Bronte", 502, false);
-// console.log(myLibrary);
 
 window.onload = () => {
   const newBookButton = document.getElementById("new-book-button");
@@ -101,7 +124,13 @@ window.onload = () => {
     e.preventDefault();
 
     let book = createNewBook(newBookForm);
-    allBooksDiv.append(book.getHtml());
+    myLibrary.push(book);
+
+    let bookDiv = book.getHtml();
+    bookDiv.dataset.index = myLibrary.length - 1;
+    bookDiv.append(createRemovalButton());
+
+    allBooksDiv.append(bookDiv);
 
     toggleForm(newBookButton, newBookForm);
     clearForm(newBookForm);
