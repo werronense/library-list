@@ -27,6 +27,7 @@ Book.prototype.getHtml = function() {
   pages.textContent = `Pages: ${this.pages > 0 ? this.pages : "unknown"}`;
 
   let read = document.createElement("li");
+  read.classList.add("read-status");
   read.textContent = `${this.read ? '' : 'not yet'} read`;
 
   libraryItem.append(title);
@@ -55,9 +56,12 @@ function render(library, parent) {
     let bookDiv = book.getHtml();
     bookDiv.dataset.index = i;
 
-    let removalButton = createRemovalButton();
+    let readButton = createReadButton();
+    bookDiv.append(readButton);
 
+    let removalButton = createRemovalButton();
     bookDiv.append(removalButton);
+
     parent.append(bookDiv);
   });
 }
@@ -89,6 +93,22 @@ function createNewBook(form) {
 }
 
 
+function createReadButton() {
+  let readButton = document.createElement("button");
+  readButton.textContent = "Change Read Status";
+
+  readButton.addEventListener("click", e => {
+    let parent = e.target.parentNode
+    myLibrary[parent.dataset.index].toggleRead();
+
+    parent.querySelector(".read-status").textContent =
+      `${myLibrary[parent.dataset.index].read ? '' : 'not yet'} read`;
+  });
+
+  return readButton;
+}
+
+
 function createRemovalButton() {
   let removalButton = document.createElement("button");
   removalButton.textContent = "Remove";
@@ -101,10 +121,12 @@ function createRemovalButton() {
   return removalButton;
 }
 
+
 // temporary
 addBookToLibrary("The Hobbit", "J.R.R. Tolkein", 295, false);
 addBookToLibrary("The Brothers Karamazov", "Fyodor Dostoyevsky", 776, true);
 addBookToLibrary("Jane Eyre", "Charlotte Bronte", 502, false);
+
 
 window.onload = () => {
   const newBookButton = document.getElementById("new-book-button");
@@ -128,6 +150,7 @@ window.onload = () => {
 
     let bookDiv = book.getHtml();
     bookDiv.dataset.index = myLibrary.length - 1;
+    bookDiv.append(createReadButton());
     bookDiv.append(createRemovalButton());
 
     allBooksDiv.append(bookDiv);
