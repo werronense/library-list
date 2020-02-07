@@ -24,7 +24,7 @@ Book.prototype.getHtml = function() {
   author.textContent = `Author: ${this.author}`;
 
   let pages = document.createElement("li");
-  pages.textContent = `Pages: ${this.pages > 0 ? this.pages : "unknown"}`;
+  pages.textContent = `Pages: ${this.pages}`;
 
   let read = document.createElement("li");
   read.classList.add("read-status");
@@ -33,7 +33,9 @@ Book.prototype.getHtml = function() {
   libraryItem.append(title);
 
   info.append(author);
-  info.append(pages);
+  if (this.pages > 0) {
+    info.append(pages);
+  }
   info.append(read);
 
   libraryItem.append(info);
@@ -85,7 +87,7 @@ function createNewBook(form) {
   let book = new Book(
     form.title.value,
     form.author.value,
-    form.pages.value > 0 || 0,
+    parseInt(form.pages.value) || 0,
     form.read.value == "read"
   );
 
@@ -143,19 +145,21 @@ window.onload = () => {
 
 
   submitBook.addEventListener("click", e => {
-    e.preventDefault();
+    if (newBookForm.checkValidity()) {
+      e.preventDefault();
 
-    let book = createNewBook(newBookForm);
-    myLibrary.push(book);
+      let book = createNewBook(newBookForm);
+      myLibrary.push(book);
 
-    let bookDiv = book.getHtml();
-    bookDiv.dataset.index = myLibrary.length - 1;
-    bookDiv.append(createReadButton());
-    bookDiv.append(createRemovalButton());
+      let bookDiv = book.getHtml();
+      bookDiv.dataset.index = myLibrary.length - 1;
+      bookDiv.append(createReadButton());
+      bookDiv.append(createRemovalButton());
 
-    allBooksDiv.append(bookDiv);
+      allBooksDiv.append(bookDiv);
 
-    toggleForm(newBookButton, newBookForm);
-    clearForm(newBookForm);
+      toggleForm(newBookButton, newBookForm);
+      clearForm(newBookForm);
+    }
   });
 }
