@@ -124,12 +124,6 @@ function createRemovalButton() {
 }
 
 
-// temporary
-addBookToLibrary("The Hobbit", "J.R.R. Tolkein", 295, false);
-addBookToLibrary("The Brothers Karamazov", "Fyodor Dostoyevsky", 776, true);
-addBookToLibrary("Jane Eyre", "Charlotte Bronte", 502, false);
-
-
 window.onload = () => {
   const newBookButton = document.getElementById("new-book-button");
   const newBookForm = document.getElementById("new-book-form");

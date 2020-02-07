@@ -116,3 +116,9 @@ input {
 .invisible {
   display: none;
 }
+
+@media (max-width: 750px) {
+  .main-container {
+    width: 70vw;
+  }
+}
